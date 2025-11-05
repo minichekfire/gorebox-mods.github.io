@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoreBox Mod Selector</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #e6e6e6;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #ff416c, #ff4b2b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .subtitle {
+            color: #a0a0c0;
+            font-size: 1.2rem;
+        }
+        
+        .mods-container {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .mod-card {
+            background: rgba(30, 30, 50, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            width: 220px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(100, 100, 150, 0.3);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mod-card:hover {
+            transform: translateY(-10px);
+            background: rgba(40, 40, 70, 0.8);
+            border-color: rgba(150, 150, 200, 0.4);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+        }
+        
+        .mod-icon {
+            font-size: 3.5rem;
+            text-align: center;
+            margin-bottom: 15px;
+            color: #ff6b6b;
+        }
+        
+        .mod-name {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #ff9a8b;
+            text-align: center;
+        }
+        
+        .mod-author {
+            font-size: 0.9rem;
+            color: #8a8ab0;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .mod-description {
+            font-size: 0.9rem;
+            color: #b8b8d9;
+            text-align: center;
+            min-height: 60px;
+        }
+        
+        .side-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            padding: 30px;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            transition: right 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow-y: auto;
+        }
+        
+        .side-panel.active {
+            right: 0;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            background: rgba(255, 75, 43, 0.8);
+            transform: rotate(90deg);
+        }
+        
+        .panel-content {
+            padding-top: 50px;
+        }
+        
+        .panel-icon {
+            font-size: 4rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ff6b6b;
+        }
+        
+        .panel-name {
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: #ff9a8b;
+            text-align: center;
+        }
+        
+        .panel-author {
+            font-size: 1.2rem;
+            color: #a9a9d6;
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(200, 200, 255, 0.2);
+            padding-bottom: 15px;
+        }
+        
+        .panel-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #d0d0e6;
+        }
+        
+        .download-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(90deg, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 75, 43, 0.4);
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 75, 43, 0.6);
+            background: linear-gradient(90deg, #ff4b2b, #ff416c);
+        }
+        
+        .download-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        @media (max-width: 768px) {
+            .side-panel {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .mod-card {
+                width: 100%;
+                max-width: 350px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GoreBox Mod Selector</h1>
+            <p class="subtitle">Click on any mod to view details and download</p>
+        </header>
+        
+        <div class="mods-container">
+            <!-- Mod 1 -->
+            <div class="mod-card" data-mod="1">
+                <div class="mod-icon">
+                    <i class="fas fa-gun"></i>
+                </div>
+                <h3 class="mod-name">Weapon Pack</h3>
+                <p class="mod-author">by WeaponMaster</p>
+                <p class="mod-description">Adds 50+ new weapons with unique mechanics and effects to enhance your gameplay experience.</p>
+            </div>
+            
+            <!-- Mod 2 -->
+            <div class="mod-card" data-mod="2">
+                <div class="mod-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3 class="mod-name">NPC Overhaul</h3>
+                <p class="mod-author">by AI_Enthusiast</p>
+                <p class="mod-description">Completely reworks NPC AI with smarter pathfinding, better reactions, and new behaviors.</p>
+            </div>
+            
+            <!-- Mod 3 -->
+            <div class="mod-card" data-mod="3">
+                <div class="mod-icon">
+                    <i class="fas fa-mountain"></i>
+                </div>
+                <h3 class="mod-name">New Map: Volcano</h3>
+                <p class="mod-author">by MapCreator99</p>
+                <p class="mod-description">Explore a dangerous volcanic island with lava flows, hidden caves, and unique challenges.</p>
+            </div>
+            
+            <!-- Mod 4 -->
+            <div class="mod-card" data-mod="4">
+                <div class="mod-icon">
+                    <i class="fas fa-car"></i>
+                </div>
+                <h3 class="mod-name">Vehicle Mod</h3>
+                <p class="mod-author">by SpeedDemon</p>
+                <p class="mod-description">Adds 15 new vehicles including tanks, helicopters, and sports cars with realistic physics.</p>
+            </div>
+            
+            <!-- Mod 5 -->
+            <div class="mod-card" data-mod="5">
+                <div class="mod-icon">
+                    <i class="fas fa-user-ninja"></i>
+                </div>
+                <h3 class="mod-name">Stealth System</h3>
+                <p class="mod-author">by ShadowOps</p>
+                <p class="mod-description">Introduce stealth mechanics with silenced weapons, camouflage, and enemy awareness system.</p>
+            </div>
+            
+            <!-- Mod 6 -->
+            <div class="mod-card" data-mod="6">
+                <div class="mod-icon">
+                    <i class="fas fa-bomb"></i>
+                </div>
+                <h3 class="mod-name">Explosives Pack</h3>
+                <p class="mod-author">by BoomMaker</p>
+                <p class="mod-description">Massive collection of explosives from grenades to tactical nukes with chain reaction effects.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="side-panel" id="sidePanel">
+        <button class="close-btn" id="closeBtn">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="panel-content">
+            <div class="panel-icon" id="panelIcon">
+                <i class="fas fa-gun"></i>
+            </div>
+            <h2 class="panel-name" id="panelName">Weapon Pack</h2>
+            <p class="panel-author" id="panelAuthor">by WeaponMaster</p>
+            <p class="panel-description" id="panelDescription">
+                Adds 50+ new weapons with unique mechanics and effects to enhance your gameplay experience. 
+                Includes realistic recoil, bullet penetration, and weapon customization options.
+            </p>
+            <button class="download-btn" id="downloadBtn">
+                <i class="fas fa-download"></i> Download Mod
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        // Mod data
+        const modData = {
+            1: {
+                icon: "fa-gun",
+                name: "Weapon Pack",
+                author: "WeaponMaster",
+                description: "Adds 50+ new weapons with unique mechanics and effects to enhance your gameplay experience. Includes realistic recoil, bullet penetration, and weapon customization options."
+            },
+            2: {
+                icon: "fa-robot",
+                name: "NPC Overhaul",
+                author: "AI_Enthusiast",
+                description: "Completely reworks NPC AI with smarter pathfinding, better reactions, and new behaviors. NPCs now have unique personalities and can form alliances or rivalries."
+            },
+            3: {
+                icon: "fa-mountain",
+                name: "New Map: Volcano",
+                author: "MapCreator99",
+                description: "Explore a dangerous volcanic island with lava flows, hidden caves, and unique challenges. Features dynamic environmental hazards and rare resources."
+            },
+            4: {
+                icon: "fa-car",
+                name: "Vehicle Mod",
+                author: "SpeedDemon",
+                description: "Adds 15 new vehicles including tanks, helicopters, and sports cars with realistic physics. Includes vehicle customization and repair mechanics."
+            },
+            5: {
+                icon: "fa-user-ninja",
+                name: "Stealth System",
+                author: "ShadowOps",
+                description: "Introduce stealth mechanics with silenced weapons, camouflage, and enemy awareness system. Includes night vision, lockpicking, and alarm systems."
+            },
+            6: {
+                icon: "fa-bomb",
+                name: "Explosives Pack",
+                author: "BoomMaker",
+                description: "Massive collection of explosives from grenades to tactical nukes with chain reaction effects. Features destructible environments and physics-based explosions."
+            }
+        };
+        
+        // DOM elements
+        const modCards = document.querySelectorAll('.mod-card');
+        const sidePanel = document.getElementById('sidePanel');
+        const overlay = document.getElementById('overlay');
+        const closeBtn = document.getElementById('closeBtn');
+        const panelIcon = document.getElementById('panelIcon');
+        const panelName = document.getElementById('panelName');
+        const panelAuthor = document.getElementById('panelAuthor');
+        const panelDescription = document.getElementById('panelDescription');
+        const downloadBtn = document.getElementById('downloadBtn');
+        
+        // Add click event to each mod card
+        modCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const modId = card.getAttribute('data-mod');
+                const mod = modData[modId];
+                
+                // Update panel content
+                panelIcon.innerHTML = `<i class="fas ${mod.icon}"></i>`;
+                panelName.textContent = mod.name;
+                panelAuthor.textContent = `by ${mod.author}`;
+                panelDescription.textContent = mod.description;
+                
+                // Show panel
+                sidePanel.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        // Close panel function
+        function closePanel() {
+            sidePanel.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close button event
+        closeBtn.addEventListener('click', closePanel);
+        
+        // Close when clicking overlay
+        overlay.addEventListener('click', closePanel);
+        
+        // Download button event
+        downloadBtn.addEventListener('click', () => {
+            const modName = panelName.textContent;
+            alert(`Downloading "${modName}"...\nIn a real implementation, this would start the download.`);
+        });
+        
+        // Add keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidePanel.classList.contains('active')) {
+                closePanel();
+            }
+        });
+    </script>
+</body>
+</html>
