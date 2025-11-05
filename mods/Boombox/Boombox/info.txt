@@ -1,5 +1,0 @@
-name: Boombox Mod
-description: <align=center><size=70><color=red><b>RUS</b><br><size=40><align=left><color=orange>Добавляет Рабочий Бумбокс.<br><i>Чтобы его заспавнить нажмите клавишу "j", нажмите "m" для меню настройки.<br>Вы можете поставить свою музыку поменяв одну из исходных по пути Boombox/audio/ (ГЛАВНОЕ ПОМЕНЯЙТЕ НАЗВАНИЕ НА music1,2,3,4,5)  </i><br><br> <align=center><size=70><color=blue><b>ENG</b><br><size=40><color=orange><align=left>Adds A Working Boombox.<br><i>To start it, press the "j" key, press "m" for the setup menu.<br>You can put your own music by changing one of the original ones along the Boombox/audio/ path (THE MAIN THING IS TO CHANGE THE NAME TO music1,2,3,4,5)</i>
-version: 1.0
-active:true
-unloadOnError:false
