@@ -23,13 +23,13 @@
 
     .container {
       max-width: 1200px;
-      margin: 0;
+      margin: 0 auto;
       padding-left: 0;
     }
 
     header {
       padding: 40px 0 30px;
-      text-align: left; /* ← выравнивание по левому краю */
+      text-align: left;
     }
 
     h1 {
@@ -55,7 +55,7 @@
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 28px;
       padding: 10px 0;
-      justify-content: start; /* ← не центрировать, а начинать слева */
+      justify-content: start;
     }
 
     .mod-card {
@@ -66,7 +66,7 @@
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
       border: 1px solid rgba(80, 40, 90, 0.3);
-      width: 200px; /* фиксированная ширина для строгого квадрата */
+      width: 200px;
       flex-shrink: 0;
     }
 
@@ -78,7 +78,7 @@
 
     .mod-card .mod-preview {
       width: 100%;
-      aspect-ratio: 1 / 1; /* ← строго квадрат */
+      aspect-ratio: 1 / 1;
       overflow: hidden;
     }
 
@@ -110,7 +110,6 @@
       color: #b0b0d0;
     }
 
-    /* Side Panel — без изменений */
     .overlay {
       position: fixed;
       top: 0;
@@ -291,18 +290,21 @@
         name: "Custom Menu Music",
         author: "bigWater6464",
         description: "Replaces the standard menu music with a custom track.\nConfig key: M",
-        icon: "img/mod1.png"
+        icon: "img/mod1.png",
+        downloadUrl: "mods/CustomMenuMusic.7z"
       },
       2: {
         name: "Maxwell Mod",
         author: "Egor Polovnik",
         description: "Adds Maxwell's cat to the game. Press 'M' in-game to spawn it.",
-        icon: "img/mod2.png"
+        icon: "img/mod2.png",
+        downloadUrl: "mods/Maxwell mod.7z"
       }
     };
 
     const modsGrid = document.getElementById('modsGrid');
 
+    // Генерация карточек модов
     Object.entries(modData).forEach(([id, mod]) => {
       const card = document.createElement('div');
       card.className = 'mod-card';
@@ -319,6 +321,7 @@
       modsGrid.appendChild(card);
     });
 
+    // Элементы панели
     const sidePanel = document.getElementById('sidePanel');
     const overlay = document.getElementById('overlay');
     const closeBtn = document.getElementById('closeBtn');
@@ -328,6 +331,7 @@
     const panelDescription = document.getElementById('panelDescription');
     const downloadBtn = document.getElementById('downloadBtn');
 
+    // Открытие панели
     document.querySelectorAll('.mod-card').forEach(card => {
       card.addEventListener('click', () => {
         const modId = card.getAttribute('data-mod');
@@ -338,12 +342,14 @@
         panelAuthor.textContent = `by ${mod.author}`;
         panelDescription.innerHTML = mod.description.replace(/\n/g, '<br>');
 
+        sidePanel.setAttribute('data-current-mod', modId); // Сохраняем ID
         sidePanel.classList.add('active');
         overlay.classList.add('active');
         document.body.style.overflow = 'hidden';
       });
     });
 
+    // Закрытие панели
     function closePanel() {
       sidePanel.classList.remove('active');
       overlay.classList.remove('active');
@@ -356,8 +362,20 @@
       if (e.key === 'Escape') closePanel();
     });
 
+    // Скачивание мода
     downloadBtn.addEventListener('click', () => {
-      alert(`📥 Downloading "${panelName.textContent}"...\n\n(Real download would start here)`);
+      const modId = sidePanel.getAttribute('data-current-mod');
+      const mod = modData[modId];
+      if (mod && mod.downloadUrl) {
+        const link = document.createElement('a');
+        link.href = mod.downloadUrl;
+        link.download = '';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        alert("Download link not available for this mod.");
+      }
     });
   </script>
 </body>
