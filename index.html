@@ -285,112 +285,154 @@
   </div>
 
   <script>
-    const modData = {
-      1: {
-        name: "Custom Menu Music",
-        author: "bigWater6464",
-        description: "Replaces the standard menu music with a custom track.\nConfig key: M",
-        icon: "img/mod1.png",
-        downloadUrl: "mods/CustomMenuMusic.7z"
-      },
-      2: {
-        name: "Maxwell Mod",
-        author: "Easy Mods (t.me/EasyMods1gorebox)",
-        description: "Adds Maxwell's cat to the game. Press 'M' in-game to spawn it.",
-        icon: "img/mod2.png",
-        downloadUrl: "mods/Maxwell mod.7z"
-      },
-      3: {
-        name: "BoomBox",
-        author: "Easy Mods (t.me/EasyMods1gorebox)",
-        description: "Adds A Working Boombox. To start it, press the 'j' key, press 'm' for the setup menu. You can put your own music by changing one of the original ones along the Boombox/audio/ path (THE MAIN THING IS TO CHANGE THE NAME TO music1,2,3,4,5)",
-        icon: "img/mod3.jpg",
-        downloadUrl: "mods/Boombox.zip"
-      },
-      4: {
-        name: "Third Person Reimagined V2",
-        author: "O sebe O sebe",
-        description: "No description provided.",
-        icon: "img/mod4.jpg",
-        downloadUrl: "mods/ThirdPersonReimagined V2.rar"
-      }
-    };
-
-    const modsGrid = document.getElementById('modsGrid');
-
-    // Генерация карточек модов
-    Object.entries(modData).forEach(([id, mod]) => {
-      const card = document.createElement('div');
-      card.className = 'mod-card';
-      card.setAttribute('data-mod', id);
-      card.innerHTML = `
-        <div class="mod-preview">
-          <img src="${mod.icon}" alt="${mod.name}">
-        </div>
-        <div class="mod-info">
-          <div class="mod-title">${mod.name}</div>
-          <div class="mod-author">by ${mod.author}</div>
-        </div>
-      `;
-      modsGrid.appendChild(card);
-    });
-
-    // Элементы панели
-    const sidePanel = document.getElementById('sidePanel');
-    const overlay = document.getElementById('overlay');
-    const closeBtn = document.getElementById('closeBtn');
-    const panelIconImg = document.getElementById('panelIconImg');
-    const panelName = document.getElementById('panelName');
-    const panelAuthor = document.getElementById('panelAuthor');
-    const panelDescription = document.getElementById('panelDescription');
-    const downloadBtn = document.getElementById('downloadBtn');
-
-    // Открытие панели
-    document.querySelectorAll('.mod-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const modId = card.getAttribute('data-mod');
-        const mod = modData[modId];
-
-        panelIconImg.src = mod.icon;
-        panelName.textContent = mod.name;
-        panelAuthor.textContent = `by ${mod.author}`;
-        panelDescription.innerHTML = mod.description.replace(/\n/g, '<br>');
-
-        sidePanel.setAttribute('data-current-mod', modId); // Сохраняем ID
-        sidePanel.classList.add('active');
-        overlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      });
-    });
-
-    // Закрытие панели
-    function closePanel() {
-      sidePanel.classList.remove('active');
-      overlay.classList.remove('active');
-      document.body.style.overflow = 'auto';
+  const modData = {
+    1: {
+      name: "Custom Menu Music",
+      author: "bigWater6464",
+      description: "Replaces the standard menu music with a custom track.\nConfig key: M",
+      icon: "img/mod1.png",
+      downloadUrl: "mods/CustomMenuMusic.7z"
+      // video: отсутствует → не будет отображаться
+    },
+    2: {
+      name: "Maxwell Mod",
+      author: "Easy Mods (t.me/EasyMods1gorebox)",
+      description: "Adds Maxwell's cat to the game. Press 'M' in-game to spawn it.",
+      icon: "img/mod2.png",
+      downloadUrl: "mods/Maxwell mod.7z",
+      video: "https://www.youtube.com/embed/dQw4w9WgXcQ" // пример YouTube
+    },
+    3: {
+      name: "BoomBox",
+      author: "Easy Mods (t.me/EasyMods1gorebox)",
+      description: "Adds A Working Boombox. To start it, press the 'j' key, press 'm' for the setup menu. You can put your own music by changing one of the original ones along the Boombox/audio/ path (THE MAIN THING IS TO CHANGE THE NAME TO music1,2,3,4,5)",
+      icon: "img/mod3.jpg",
+      downloadUrl: "mods/Boombox.zip",
+      video: "videos/boombox_demo.mp4" // локальное видео
+    },
+    4: {
+      name: "Third Person Reimagined V2",
+      author: "O sebe O sebe",
+      description: "No description provided.",
+      icon: "img/mod4.jpg",
+      downloadUrl: "mods/ThirdPersonReimagined V2.rar"
+      // без видео
     }
+  };
 
-    closeBtn.addEventListener('click', closePanel);
-    overlay.addEventListener('click', closePanel);
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closePanel();
-    });
+  const modsGrid = document.getElementById('modsGrid');
 
-    // Скачивание мода
-    downloadBtn.addEventListener('click', () => {
-      const modId = sidePanel.getAttribute('data-current-mod');
+  // Генерация карточек модов
+  Object.entries(modData).forEach(([id, mod]) => {
+    const card = document.createElement('div');
+    card.className = 'mod-card';
+    card.setAttribute('data-mod', id);
+    card.innerHTML = `
+      <div class="mod-preview">
+        <img src="${mod.icon}" alt="${mod.name}">
+      </div>
+      <div class="mod-info">
+        <div class="mod-title">${mod.name}</div>
+        <div class="mod-author">by ${mod.author}</div>
+      </div>
+    `;
+    modsGrid.appendChild(card);
+  });
+
+  // Элементы панели
+  const sidePanel = document.getElementById('sidePanel');
+  const overlay = document.getElementById('overlay');
+  const closeBtn = document.getElementById('closeBtn');
+  const panelIconImg = document.getElementById('panelIconImg');
+  const panelName = document.getElementById('panelName');
+  const panelAuthor = document.getElementById('panelAuthor');
+  const panelDescription = document.getElementById('panelDescription');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const videoContainer = document.getElementById('videoContainer');
+
+  // Открытие панели
+  document.querySelectorAll('.mod-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const modId = card.getAttribute('data-mod');
       const mod = modData[modId];
-      if (mod && mod.downloadUrl) {
-        const link = document.createElement('a');
-        link.href = mod.downloadUrl;
-        link.download = '';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+
+      panelIconImg.src = mod.icon;
+      panelName.textContent = mod.name;
+      panelAuthor.textContent = `by ${mod.author}`;
+      panelDescription.innerHTML = mod.description.replace(/\n/g, '<br>');
+
+      // Обработка видео
+      if (mod.video) {
+        let videoElement;
+        if (mod.video.endsWith('.mp4') || mod.video.endsWith('.webm') || mod.video.endsWith('.ogg')) {
+          videoElement = document.createElement('video');
+          videoElement.controls = true;
+          videoElement.width = '100%';
+          videoElement.style.borderRadius = '12px';
+          videoElement.style.marginTop = '20px';
+          videoElement.style.boxShadow = '0 4px 15px rgba(0,0,0,0.4)';
+          const source = document.createElement('source');
+          source.src = mod.video;
+          source.type = mod.video.endsWith('.mp4') ? 'video/mp4' : mod.video.endsWith('.webm') ? 'video/webm' : 'video/ogg';
+          videoElement.appendChild(source);
+        } else {
+          // Предполагаем embed-ссылку (YouTube и т.п.)
+          videoElement = document.createElement('iframe');
+          videoElement.src = mod.video;
+          videoElement.width = '100%';
+          videoElement.height = '200';
+          videoElement.style.border = 'none';
+          videoElement.style.borderRadius = '12px';
+          videoElement.style.marginTop = '20px';
+          videoElement.style.boxShadow = '0 4px 15px rgba(0,0,0,0.4)';
+          videoElement.allow = 'fullscreen';
+        }
+        videoContainer.innerHTML = '';
+        videoContainer.appendChild(videoElement);
+        videoContainer.style.display = 'block';
       } else {
-        alert("Download link not available for this mod.");
+        videoContainer.style.display = 'none';
+        videoContainer.innerHTML = '';
       }
+
+      sidePanel.setAttribute('data-current-mod', modId);
+      sidePanel.classList.add('active');
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
     });
-  </script>
+  });
+
+  // Закрытие панели
+  function closePanel() {
+    sidePanel.classList.remove('active');
+    overlay.classList.remove('active');
+    document.body.style.overflow = 'auto';
+    // Остановка видео при закрытии (особенно для YouTube)
+    const iframe = videoContainer.querySelector('iframe');
+    if (iframe) iframe.src = iframe.src; // перезагрузка для остановки
+  }
+
+  closeBtn.addEventListener('click', closePanel);
+  overlay.addEventListener('click', closePanel);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePanel();
+  });
+
+  // Скачивание мода
+  downloadBtn.addEventListener('click', () => {
+    const modId = sidePanel.getAttribute('data-current-mod');
+    const mod = modData[modId];
+    if (mod && mod.downloadUrl) {
+      const link = document.createElement('a');
+      link.href = mod.downloadUrl;
+      link.download = '';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      alert("Download link not available for this mod.");
+    }
+  });
+</script>
 </body>
 </html>
