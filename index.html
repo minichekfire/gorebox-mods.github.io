@@ -369,12 +369,18 @@
             videoElement.style.borderRadius = '12px';
             videoElement.style.marginTop = '20px';
             videoElement.style.boxShadow = '0 4px 15px rgba(0,0,0,0.4)';
+            
             const source = document.createElement('source');
             source.src = mod.video;
-            source.type = mod.video.endsWith('.mp4') ? 'video/mp4' : mod.video.endsWith('.webm') ? 'video/webm' : 'video/ogg';
+            source.type = mod.video.endsWith('.mp4')
+              ? 'video/mp4'
+              : mod.video.endsWith('.webm')
+                ? 'video/webm'
+                : 'video/ogg';
+            
             videoElement.appendChild(source);
+            videoElement.load();
           } else {
-            // Предполагаем embed-ссылку (YouTube и т.п.)
             videoElement = document.createElement('iframe');
             videoElement.src = mod.video;
             videoElement.width = '100%';
@@ -383,7 +389,8 @@
             videoElement.style.borderRadius = '12px';
             videoElement.style.marginTop = '20px';
             videoElement.style.boxShadow = '0 4px 15px rgba(0,0,0,0.4)';
-            videoElement.allow = 'fullscreen';
+            videoElement.allow = 'autoplay; fullscreen';
+            videoElement.allowFullscreen = true;
           }
           videoContainer.innerHTML = '';
           videoContainer.appendChild(videoElement);
