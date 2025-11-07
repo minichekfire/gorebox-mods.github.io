@@ -232,6 +232,21 @@
       box-shadow: 0 6px 25px rgba(255, 42, 109, 0.6);
     }
 
+    /* ✅ СТИЛИ ДЛЯ ВИДЕО — КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ */
+    #videoContainer {
+      display: none;
+      margin-top: 20px;
+    }
+
+    #videoContainer video,
+    #videoContainer iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      background: #0f0c1c;
+    }
+
     @media (max-width: 768px) {
       .mods-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -272,17 +287,17 @@
       <i class="fas fa-times"></i>
     </button>
     <div class="panel-content">
-  <div class="panel-icon">
-      <img id="panelIconImg" src="" alt="Mod Icon">
+      <div class="panel-icon">
+        <img id="panelIconImg" src="" alt="Mod Icon">
+      </div>
+      <div id="videoContainer"></div>
+      <h2 class="panel-name" id="panelName"></h2>
+      <p class="panel-author" id="panelAuthor"></p>
+      <p class="panel-description" id="panelDescription"></p>
+      <button class="download-btn" id="downloadBtn">
+        <i class="fas fa-download"></i> Download Mod
+      </button>
     </div>
-    <div id="videoContainer" style="display: none;"></div>
-    <h2 class="panel-name" id="panelName"></h2>
-    <p class="panel-author" id="panelAuthor"></p>
-    <p class="panel-description" id="panelDescription"></p>
-    <button class="download-btn" id="downloadBtn">
-      <i class="fas fa-download"></i> Download Mod
-    </button>
-  </div>
   </div>
 
   <script>
@@ -311,15 +326,15 @@
       4: {
         name: "Third Person Reimagined V2",
         author: "O sebe O sebe",
-        description: "No description provided.",
+        description: "Third-person camera mod with enhanced controls and smooth movement.",
         icon: "img/mod4.png",
         downloadUrl: "mods/ThirdPersonReimagined V2.rar",
-        video: "https://minichekfire.github.io/gorebox-mods.github.io/videos/thirdperson_demo.mp4"
+        video: "videos/thirdperson_demo.mp4"
       }
     };
-  
+
     const modsGrid = document.getElementById('modsGrid');
-  
+
     // Генерация карточек модов
     Object.entries(modData).forEach(([id, mod]) => {
       const card = document.createElement('div');
@@ -327,7 +342,7 @@
       card.setAttribute('data-mod', id);
       card.innerHTML = `
         <div class="mod-preview">
-          <img src="${mod.icon}" alt="${mod.name}">
+          <img src="${mod.icon}" alt="${mod.name}" onerror="this.src='https://via.placeholder.com/200/333/999?text=No+Image'">
         </div>
         <div class="mod-info">
           <div class="mod-title">${mod.name}</div>
@@ -336,7 +351,7 @@
       `;
       modsGrid.appendChild(card);
     });
-  
+
     // Элементы панели
     const sidePanel = document.getElementById('sidePanel');
     const overlay = document.getElementById('overlay');
@@ -347,18 +362,18 @@
     const panelDescription = document.getElementById('panelDescription');
     const downloadBtn = document.getElementById('downloadBtn');
     const videoContainer = document.getElementById('videoContainer');
-  
+
     // Открытие панели
     document.querySelectorAll('.mod-card').forEach(card => {
       card.addEventListener('click', () => {
         const modId = card.getAttribute('data-mod');
         const mod = modData[modId];
-  
+
         panelIconImg.src = mod.icon;
         panelName.textContent = mod.name;
         panelAuthor.textContent = `by ${mod.author}`;
         panelDescription.innerHTML = mod.description.replace(/\n/g, '<br>');
-  
+
         // Обработка видео
         if (mod.video) {
           let videoElement;
@@ -366,10 +381,7 @@
             videoElement = document.createElement('video');
             videoElement.controls = true;
             videoElement.width = '100%';
-            videoElement.style.borderRadius = '12px';
-            videoElement.style.marginTop = '20px';
-            videoElement.style.boxShadow = '0 4px 15px rgba(0,0,0,0.4)';
-            
+
             const source = document.createElement('source');
             source.src = mod.video;
             source.type = mod.video.endsWith('.mp4')
@@ -377,21 +389,20 @@
               : mod.video.endsWith('.webm')
                 ? 'video/webm'
                 : 'video/ogg';
-            
+
             videoElement.appendChild(source);
-            videoElement.load();
+            videoElement.load(); // ⬅️ КРИТИЧЕСКИ ВАЖНО!
           } else {
+            // Предполагаем embed-ссылку (YouTube и т.п.)
             videoElement = document.createElement('iframe');
             videoElement.src = mod.video;
             videoElement.width = '100%';
             videoElement.height = '200';
             videoElement.style.border = 'none';
-            videoElement.style.borderRadius = '12px';
-            videoElement.style.marginTop = '20px';
-            videoElement.style.boxShadow = '0 4px 15px rgba(0,0,0,0.4)';
             videoElement.allow = 'autoplay; fullscreen';
             videoElement.allowFullscreen = true;
           }
+
           videoContainer.innerHTML = '';
           videoContainer.appendChild(videoElement);
           videoContainer.style.display = 'block';
@@ -399,30 +410,34 @@
           videoContainer.style.display = 'none';
           videoContainer.innerHTML = '';
         }
-  
+
         sidePanel.setAttribute('data-current-mod', modId);
         sidePanel.classList.add('active');
         overlay.classList.add('active');
         document.body.style.overflow = 'hidden';
       });
     });
-  
+
     // Закрытие панели
     function closePanel() {
       sidePanel.classList.remove('active');
       overlay.classList.remove('active');
       document.body.style.overflow = 'auto';
-      // Остановка видео при закрытии (особенно для YouTube)
+      // Остановка YouTube (если iframe)
       const iframe = videoContainer.querySelector('iframe');
-      if (iframe) iframe.src = iframe.src; // перезагрузка для остановки
+      if (iframe) {
+        const src = iframe.src;
+        iframe.src = '';
+        iframe.src = src;
+      }
     }
-  
+
     closeBtn.addEventListener('click', closePanel);
     overlay.addEventListener('click', closePanel);
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closePanel();
     });
-  
+
     // Скачивание мода
     downloadBtn.addEventListener('click', () => {
       const modId = sidePanel.getAttribute('data-current-mod');
