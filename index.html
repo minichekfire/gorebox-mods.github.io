@@ -10,121 +10,145 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Motiva Sans Bold', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    :root {
+      --bg: #0c0a1a;
+      --card-bg: rgba(20, 18, 40, 0.65);
+      --glow: #8a2be2;
+      --text: #f0f0ff;
+      --subtext: #b0b0d0;
+      --accent: #c77dff;
     }
 
     body {
-      background-color: #0f1923;
-      color: #d3d3d3;
+      background: linear-gradient(135deg, #090618, #1a0b2e);
+      color: var(--text);
       min-height: 100vh;
-      padding: 0;
+      padding: 30px;
+      font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
       overflow-x: hidden;
     }
 
-    header.nav {
-      background: #171a21;
-      height: 48px;
-      display: flex;
-      align-items: center;
-      padding: 0 24px;
-      border-bottom: 1px solid #2e3440;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-    }
-
-    .logo {
-      color: #4f86f7;
-      font-size: 1.4rem;
-      font-weight: bold;
-    }
-
     .container {
-      max-width: 1280px;
-      margin: 24px auto;
-      padding: 0 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 20px 0;
     }
 
     h1 {
-      font-size: 2.4rem;
+      font-size: 3rem;
       font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 12px;
+      background: linear-gradient(to right, #c77dff, #8a2be2, #4b0082);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
+      letter-spacing: 1px;
     }
 
     .subtitle {
-      color: #a0a0aa;
-      font-size: 1.1rem;
-      margin-bottom: 28px;
+      color: var(--subtext);
+      font-size: 1rem;
+      margin-top: 12px;
+      max-width: 600px;
+      margin: 12px auto 0;
       line-height: 1.6;
     }
 
     .mods-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 20px;
+      gap: 24px;
+      justify-items: center;
     }
 
     .mod-card {
-      background: #1b2838;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
       width: 180px;
-      text-align: center;
+      background: var(--card-bg);
+      border-radius: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(138, 43, 226, 0.2);
+      position: relative;
+    }
+
+    .mod-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(to right, transparent, var(--glow), transparent);
+      opacity: 0;
+      transition: opacity 0.4s ease;
     }
 
     .mod-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-      background: #213045;
+      transform: scale(1.04);
+      box-shadow: 0 0 20px rgba(138, 43, 226, 0.35);
+    }
+
+    .mod-card:hover::before {
+      opacity: 1;
     }
 
     .mod-preview {
       width: 100%;
-      aspect-ratio: 16 / 9;
+      aspect-ratio: 1;
       overflow: hidden;
-      border-bottom: 1px solid #2a3a4d;
     }
 
     .mod-preview img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .mod-card:hover .mod-preview img {
+      transform: scale(1.08);
     }
 
     .mod-info {
-      padding: 10px 8px;
+      padding: 14px;
+      text-align: center;
     }
 
     .mod-title {
-      font-size: 0.95rem;
+      font-size: 1.1rem;
       font-weight: 600;
-      color: #ffffff;
-      line-height: 1.3;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      color: var(--text);
+      margin-bottom: 6px;
     }
 
     .mod-author {
-      font-size: 0.8rem;
-      color: #8b9ba7;
-      margin-top: 4px;
+      font-size: 0.85rem;
+      color: var(--subtext);
+      opacity: 0.85;
     }
 
+    /* Overlay & Side Panel */
     .overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(2px);
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(6px);
       z-index: 999;
       opacity: 0;
       visibility: hidden;
-      transition: opacity 0.3s;
+      transition: opacity 0.3s ease;
     }
 
     .overlay.active {
@@ -135,17 +159,18 @@
     .side-panel {
       position: fixed;
       top: 0;
-      right: -500px;
-      width: 500px;
+      right: -420px;
+      width: 400px;
       height: 100vh;
-      background: #1b2838;
-      color: #e0e0e0;
-      padding: 32px;
+      background: rgba(15, 12, 35, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-left: 1px solid rgba(138, 43, 226, 0.4);
+      padding: 40px;
       z-index: 1000;
-      transition: right 0.4s ease;
+      transition: right 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
       overflow-y: auto;
-      border-left: 1px solid #2e3b4e;
-      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.6);
+      color: var(--text);
     }
 
     .side-panel.active {
@@ -156,37 +181,81 @@
       position: absolute;
       top: 20px;
       right: 20px;
-      background: #2a3a4d;
-      color: #a0a0a0;
+      background: rgba(138, 43, 226, 0.2);
       border: none;
-      width: 32px;
-      height: 32px;
-      border-radius: 4px;
+      color: var(--accent);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
       font-size: 1.2rem;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: all 0.3s ease;
     }
 
     .close-btn:hover {
-      background: #3a4a5d;
-      color: #ffffff;
+      background: rgba(138, 43, 226, 0.4);
+      transform: rotate(90deg);
     }
 
     .panel-icon {
-      width: 100%;
-      max-height: 280px;
-      margin-bottom: 20px;
-      border-radius: 4px;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 20px;
+      border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(138, 43, 226, 0.3);
     }
 
     .panel-icon img {
       width: 100%;
-      height: auto;
-      display: block;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .panel-name {
+      font-size: 1.6rem;
+      text-align: center;
+      margin-bottom: 10px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .panel-author {
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--subtext);
+      margin-bottom: 20px;
+    }
+
+    .panel-description {
+      font-size: 1rem;
+      line-height: 1.7;
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--text);
+    }
+
+    .download-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(to right, #8a2be2, #4b0082);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
+    }
+
+    .download-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(138, 43, 226, 0.6);
     }
 
     #videoContainer {
@@ -198,50 +267,19 @@
     #videoContainer iframe {
       width: 100%;
       aspect-ratio: 16 / 9;
-      border-radius: 4px;
-      background: #000;
+      border-radius: 10px;
+      border: 1px solid rgba(138, 43, 226, 0.2);
+      background: #0a0718;
     }
 
-    .panel-name {
-      font-size: 1.8rem;
-      color: #ffffff;
-      margin-bottom: 8px;
-    }
-
-    .panel-author {
-      color: #8b9ba7;
-      font-size: 1.1rem;
-      margin-bottom: 16px;
-    }
-
-    .panel-description {
-      color: #c0c0c0;
-      line-height: 1.6;
-      margin-bottom: 24px;
-      white-space: pre-line;
-    }
-
-    .download-btn {
-      width: 100%;
-      padding: 12px;
-      background: #4f86f7;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .download-btn:hover {
-      background: #3a70e0;
-    }
-
+    /* Mobile */
     @media (max-width: 768px) {
-      .side-panel {
-        width: 100%;
-        right: -100%;
+      body {
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 2.2rem;
       }
 
       .mods-grid {
@@ -252,21 +290,28 @@
       .mod-card {
         width: 140px;
       }
+
+      .side-panel {
+        width: 100%;
+        right: -100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .mods-grid {
+        grid-template-columns: 1fr 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <header class="nav">
-    <div class="logo">GoreBox Mods</div>
-  </header>
-
   <div class="container">
-    <h1>GoreBox Mods</h1>
-    <p class="subtitle">I publish all the mods I find or create here. If you'd like to publish a mod here or delete yours, please DM me on Discord: bigwater6464</p>
+    <header>
+      <h1>GOREBOX MODS</h1>
+      <p class="subtitle">I publish all the mods I find or create here. DM me on Discord: bigwater6464</p>
+    </header>
 
-    <div class="mods-grid" id="modsGrid">
-      <!-- Generated by JS -->
-    </div>
+    <div class="mods-grid" id="modsGrid"></div>
   </div>
 
   <div class="overlay" id="overlay"></div>
@@ -275,16 +320,18 @@
     <button class="close-btn" id="closeBtn">
       <i class="fas fa-times"></i>
     </button>
-    <div class="panel-icon">
-      <img id="panelIconImg" src="" alt="Mod Image">
+    <div class="panel-content">
+      <div class="panel-icon">
+        <img id="panelIconImg" src="" alt="Mod Icon">
+      </div>
+      <div id="videoContainer"></div>
+      <h2 class="panel-name" id="panelName"></h2>
+      <p class="panel-author" id="panelAuthor"></p>
+      <p class="panel-description" id="panelDescription"></p>
+      <button class="download-btn" id="downloadBtn">
+        <i class="fas fa-download"></i> DOWNLOAD
+      </button>
     </div>
-    <div id="videoContainer"></div>
-    <h2 class="panel-name" id="panelName"></h2>
-    <p class="panel-author" id="panelAuthor"></p>
-    <p class="panel-description" id="panelDescription"></p>
-    <button class="download-btn" id="downloadBtn">
-      <i class="fas fa-download"></i> Install Mod
-    </button>
   </div>
 
   <script>
@@ -321,15 +368,13 @@
     };
 
     const modsGrid = document.getElementById('modsGrid');
-
     Object.entries(modData).forEach(([id, mod]) => {
       const card = document.createElement('div');
       card.className = 'mod-card';
       card.setAttribute('data-mod', id);
-      const imgSrc = mod.icon || 'https://via.placeholder.com/180x100/2a3a4d/ffffff?text=No+Image';
       card.innerHTML = `
         <div class="mod-preview">
-          <img src="${imgSrc}" alt="${mod.name}" onerror="this.src='https://via.placeholder.com/180x100/2a3a4d/ffffff?text=No+Image'">
+          <img src="${mod.icon}" alt="${mod.name}" onerror="this.src='https://via.placeholder.com/200/1a0b2e/8a2be2?text=404'">
         </div>
         <div class="mod-info">
           <div class="mod-title">${mod.name}</div>
@@ -354,29 +399,33 @@
         const modId = card.getAttribute('data-mod');
         const mod = modData[modId];
 
-        panelIconImg.src = mod.icon || 'https://via.placeholder.com/500x280/1b2838/ffffff?text=No+Preview';
+        panelIconImg.src = mod.icon;
         panelName.textContent = mod.name;
         panelAuthor.textContent = `by ${mod.author}`;
-        panelDescription.textContent = mod.description;
+        panelDescription.innerHTML = mod.description.replace(/\n/g, '<br>');
 
         if (mod.video) {
-          videoContainer.innerHTML = '';
-          if (mod.video.endsWith('.mp4') || mod.video.endsWith('.webm')) {
-            const video = document.createElement('video');
-            video.controls = true;
-            video.src = mod.video;
-            videoContainer.appendChild(video);
+          let videoElement;
+          if (/\.(mp4|webm|ogg)$/.test(mod.video)) {
+            videoElement = document.createElement('video');
+            videoElement.controls = true;
+            const source = document.createElement('source');
+            source.src = mod.video;
+            source.type = `video/${mod.video.split('.').pop()}`;
+            videoElement.appendChild(source);
+            videoElement.load();
           } else {
-            const iframe = document.createElement('iframe');
-            iframe.src = mod.video;
-            iframe.allowFullscreen = true;
-            iframe.allow = "autoplay; encrypted-media";
-            videoContainer.appendChild(iframe);
+            videoElement = document.createElement('iframe');
+            videoElement.src = mod.video;
+            videoElement.allow = 'autoplay; fullscreen';
+            videoElement.allowFullscreen = true;
+            videoElement.style.border = 'none';
           }
+          videoContainer.innerHTML = '';
+          videoContainer.appendChild(videoElement);
           videoContainer.style.display = 'block';
         } else {
           videoContainer.style.display = 'none';
-          videoContainer.innerHTML = '';
         }
 
         sidePanel.setAttribute('data-current-mod', modId);
@@ -392,21 +441,28 @@
       document.body.style.overflow = 'auto';
       const iframe = videoContainer.querySelector('iframe');
       if (iframe) {
-        iframe.src = iframe.src; // reset to stop YouTube
+        const src = iframe.src;
+        iframe.src = '';
+        setTimeout(() => iframe.src = src, 100);
       }
     }
 
     closeBtn.addEventListener('click', closePanel);
     overlay.addEventListener('click', closePanel);
-    document.addEventListener('keydown', e => e.key === 'Escape' && closePanel());
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closePanel();
+    });
 
     downloadBtn.addEventListener('click', () => {
       const modId = sidePanel.getAttribute('data-current-mod');
       const mod = modData[modId];
       if (mod?.downloadUrl) {
-        window.location.href = mod.downloadUrl;
+        const a = document.createElement('a');
+        a.href = mod.downloadUrl;
+        a.download = '';
+        a.click();
       } else {
-        alert("Download link not available.");
+        alert("Download unavailable.");
       }
     });
   </script>
