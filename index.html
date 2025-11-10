@@ -4,18 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GoreBox Mods</title>
+  <!-- Kenyan Coffee Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Kenyan+Coffee&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-family: 'Kenyan Coffee', sans-serif;
     }
 
     body {
-      background: #0a0a12;
-      color: #e0e0ff;
+      background: #0d0505;
+      color: #f0e0e0;
       min-height: 100vh;
       padding: 20px;
       overflow-x: hidden;
@@ -32,12 +34,12 @@
     /* Левая колонка — список модов */
     .mods-sidebar {
       width: 300px;
-      background: rgba(18, 18, 30, 0.7);
+      background: rgba(22, 8, 8, 0.85);
       border-radius: 16px;
       padding: 24px;
       overflow-y: auto;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(80, 40, 90, 0.3);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(100, 20, 20, 0.4);
       display: flex;
       flex-direction: column;
     }
@@ -45,22 +47,20 @@
     .mods-sidebar header {
       padding: 0 0 24px;
       text-align: left;
-      border-bottom: 1px solid rgba(100, 80, 120, 0.3);
+      border-bottom: 1px solid rgba(120, 30, 30, 0.4);
       margin-bottom: 20px;
     }
 
     .mods-sidebar h1 {
       font-size: 1.8rem;
-      font-weight: 800;
-      background: linear-gradient(90deg, #ff2a6d, #d16ba5);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 10px rgba(255, 42, 109, 0.3);
+      font-weight: bold;
+      color: #ff3b3b;
+      text-shadow: 0 0 10px rgba(192, 0, 0, 0.4);
       letter-spacing: -0.5px;
     }
 
     .mods-sidebar .subtitle {
-      color: #a0a0c0;
+      color: #c0a0a0;
       font-size: 0.95rem;
       margin-top: 8px;
       line-height: 1.5;
@@ -73,7 +73,7 @@
     }
 
     .mod-card {
-      background: rgba(25, 25, 40, 0.6);
+      background: rgba(30, 10, 10, 0.7);
       border-radius: 14px;
       padding: 14px;
       cursor: pointer;
@@ -82,36 +82,36 @@
     }
 
     .mod-card:hover {
-      background: rgba(35, 25, 50, 0.8);
-      border-color: rgba(255, 42, 109, 0.5);
+      background: rgba(40, 10, 10, 0.9);
+      border-color: rgba(192, 0, 0, 0.6);
     }
 
     .mod-card.active {
-      border-color: #ff2a6d;
-      background: rgba(40, 20, 50, 0.8);
+      border-color: #c00000;
+      background: rgba(35, 5, 5, 0.9);
     }
 
     .mod-card .mod-title {
       font-size: 1.1rem;
-      font-weight: 600;
-      color: #f0f0ff;
+      font-weight: bold;
+      color: #fff0f0;
     }
 
     .mod-card .mod-author {
       font-size: 0.85rem;
-      color: #b0b0d0;
+      color: #d0b0b0;
       margin-top: 4px;
     }
 
     /* Правая колонка — детали мода */
     .mod-detail-panel {
       flex: 1;
-      background: linear-gradient(135deg, #0f0c1c, #1a1230);
+      background: linear-gradient(135deg, #160808, #200b0b);
       border-radius: 16px;
       padding: 40px;
       overflow-y: auto;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-      border-left: 2px solid #ff2a6d;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+      border-left: 2px solid #c00000;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -127,8 +127,8 @@
       margin-bottom: 24px;
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 6px 20px rgba(255, 42, 109, 0.3);
-      border: 2px solid rgba(255, 42, 109, 0.4);
+      box-shadow: 0 6px 20px rgba(192, 0, 0, 0.3);
+      border: 2px solid rgba(192, 0, 0, 0.5);
     }
 
     .panel-icon img {
@@ -139,25 +139,25 @@
 
     .panel-name {
       font-size: 2rem;
-      color: #ff2a6d;
-      font-weight: 700;
+      color: #ff3b3b;
+      font-weight: bold;
       margin-bottom: 12px;
       text-align: center;
     }
 
     .panel-author {
       font-size: 1.2rem;
-      color: #c0c0e0;
+      color: #d0c0c0;
       margin-bottom: 24px;
       padding-bottom: 16px;
-      border-bottom: 1px solid rgba(100, 80, 120, 0.3);
+      border-bottom: 1px solid rgba(120, 30, 30, 0.4);
       text-align: center;
     }
 
     .panel-description {
       font-size: 1.1rem;
       line-height: 1.7;
-      color: #e0e0ff;
+      color: #f5eaea;
       margin-bottom: 32px;
       text-align: center;
       max-width: 700px;
@@ -175,28 +175,28 @@
       width: 100%;
       aspect-ratio: 16 / 9;
       border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-      background: #0f0c1c;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      background: #160808;
     }
 
     .download-btn {
       display: block;
       width: 280px;
       padding: 16px;
-      background: linear-gradient(90deg, #ff2a6d, #d16ba5);
+      background: linear-gradient(90deg, #c00000, #ff3b3b);
       color: white;
       border: none;
       border-radius: 12px;
       font-size: 1.2rem;
-      font-weight: 600;
+      font-weight: bold;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 20px rgba(255, 42, 109, 0.4);
+      box-shadow: 0 4px 20px rgba(192, 0, 0, 0.5);
     }
 
     .download-btn:hover {
       transform: translateY(-3px);
-      box-shadow: 0 6px 25px rgba(255, 42, 109, 0.6);
+      box-shadow: 0 6px 25px rgba(192, 0, 0, 0.7);
     }
 
     /* Мобильная адаптация */
@@ -214,7 +214,7 @@
       .mod-detail-panel {
         width: 100%;
         border-left: none;
-        border-top: 2px solid #ff2a6d;
+        border-top: 2px solid #c00000;
         padding: 30px 20px;
       }
     }
@@ -328,7 +328,7 @@
         const modId = card.getAttribute('data-mod');
         const mod = modData[modId];
 
-        panelIconImg.src = mod.icon || 'https://via.placeholder.com/180/333/999?text=No+Image';
+        panelIconImg.src = mod.icon || 'https://via.placeholder.com/180/160808/c00000?text=No+Image';
         panelName.textContent = mod.name;
         panelAuthor.textContent = `by ${mod.author}`;
         panelDescription.innerHTML = mod.description.replace(/\n/g, '<br>');
@@ -379,7 +379,7 @@
       });
     });
 
-    // Показать первый мод по умолчанию (опционально)
+    // Показать первый мод по умолчанию
     const firstCard = document.querySelector('.mod-card');
     if (firstCard) {
       firstCard.click();
