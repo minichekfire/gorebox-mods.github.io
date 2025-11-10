@@ -10,203 +10,125 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-    }
-
-    :root {
-      --bg: #0c0a1a;
-      --card-bg: rgba(20, 18, 40, 0.65);
-      --glow: #8a2be2;
-      --text: #f0f0ff;
-      --subtext: #b0b0d0;
-      --accent: #c77dff;
+      font-family: 'Segoe UI', system-ui, sans-serif;
     }
 
     body {
-      background: linear-gradient(135deg, #090618, #1a0b2e);
-      color: var(--text);
+      background: #0a0a12;
+      color: #e0e0ff;
       min-height: 100vh;
-      padding: 30px;
-      font-family: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+      padding: 20px;
       overflow-x: hidden;
     }
 
     .container {
-      max-width: 1100px;
+      max-width: 1600px;
       margin: 0 auto;
+      display: flex;
+      gap: 30px;
+      height: calc(100vh - 40px);
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 40px;
-      padding: 20px 0;
+    /* Левая колонка — список модов */
+    .mods-sidebar {
+      width: 300px;
+      background: rgba(18, 18, 30, 0.7);
+      border-radius: 16px;
+      padding: 24px;
+      overflow-y: auto;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(80, 40, 90, 0.3);
+      display: flex;
+      flex-direction: column;
     }
 
-    h1 {
-      font-size: 3rem;
-      font-weight: 700;
-      background: linear-gradient(to right, #c77dff, #8a2be2, #4b0082);
+    .mods-sidebar header {
+      padding: 0 0 24px;
+      text-align: left;
+      border-bottom: 1px solid rgba(100, 80, 120, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .mods-sidebar h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #ff2a6d, #d16ba5);
       -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      text-shadow: 0 0 15px rgba(138, 43, 226, 0.4);
-      letter-spacing: 1px;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 10px rgba(255, 42, 109, 0.3);
+      letter-spacing: -0.5px;
     }
 
-    .subtitle {
-      color: var(--subtext);
-      font-size: 1rem;
-      margin-top: 12px;
-      max-width: 600px;
-      margin: 12px auto 0;
-      line-height: 1.6;
+    .mods-sidebar .subtitle {
+      color: #a0a0c0;
+      font-size: 0.95rem;
+      margin-top: 8px;
+      line-height: 1.5;
     }
 
     .mods-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 24px;
-      justify-items: center;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
     .mod-card {
-      width: 180px;
-      background: var(--card-bg);
+      background: rgba(25, 25, 40, 0.6);
       border-radius: 14px;
-      overflow: hidden;
+      padding: 14px;
       cursor: pointer;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-      border: 1px solid rgba(138, 43, 226, 0.2);
-      position: relative;
-    }
-
-    .mod-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(to right, transparent, var(--glow), transparent);
-      opacity: 0;
-      transition: opacity 0.4s ease;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
     }
 
     .mod-card:hover {
-      transform: scale(1.04);
-      box-shadow: 0 0 20px rgba(138, 43, 226, 0.35);
+      background: rgba(35, 25, 50, 0.8);
+      border-color: rgba(255, 42, 109, 0.5);
     }
 
-    .mod-card:hover::before {
-      opacity: 1;
+    .mod-card.active {
+      border-color: #ff2a6d;
+      background: rgba(40, 20, 50, 0.8);
     }
 
-    .mod-preview {
-      width: 100%;
-      aspect-ratio: 1;
-      overflow: hidden;
-    }
-
-    .mod-preview img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.4s ease;
-    }
-
-    .mod-card:hover .mod-preview img {
-      transform: scale(1.08);
-    }
-
-    .mod-info {
-      padding: 14px;
-      text-align: center;
-    }
-
-    .mod-title {
+    .mod-card .mod-title {
       font-size: 1.1rem;
       font-weight: 600;
-      color: var(--text);
-      margin-bottom: 6px;
+      color: #f0f0ff;
     }
 
-    .mod-author {
+    .mod-card .mod-author {
       font-size: 0.85rem;
-      color: var(--subtext);
-      opacity: 0.85;
+      color: #b0b0d0;
+      margin-top: 4px;
     }
 
-    /* Overlay & Side Panel */
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(6px);
-      z-index: 999;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease;
-    }
-
-    .overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .side-panel {
-      position: fixed;
-      top: 0;
-      right: -420px;
-      width: 400px;
-      height: 100vh;
-      background: rgba(15, 12, 35, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-left: 1px solid rgba(138, 43, 226, 0.4);
+    /* Правая колонка — детали мода */
+    .mod-detail-panel {
+      flex: 1;
+      background: linear-gradient(135deg, #0f0c1c, #1a1230);
+      border-radius: 16px;
       padding: 40px;
-      z-index: 1000;
-      transition: right 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
       overflow-y: auto;
-      color: var(--text);
-    }
-
-    .side-panel.active {
-      right: 0;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(138, 43, 226, 0.2);
-      border: none;
-      color: var(--accent);
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      font-size: 1.2rem;
-      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+      border-left: 2px solid #ff2a6d;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
     }
 
-    .close-btn:hover {
-      background: rgba(138, 43, 226, 0.4);
-      transform: rotate(90deg);
+    .mod-detail-panel.hidden {
+      display: none;
     }
 
     .panel-icon {
-      width: 120px;
-      height: 120px;
-      margin: 0 auto 20px;
-      border-radius: 10px;
+      width: 180px;
+      height: 180px;
+      margin-bottom: 24px;
+      border-radius: 16px;
       overflow: hidden;
-      border: 1px solid rgba(138, 43, 226, 0.3);
+      box-shadow: 0 6px 20px rgba(255, 42, 109, 0.3);
+      border: 2px solid rgba(255, 42, 109, 0.4);
     }
 
     .panel-icon img {
@@ -216,120 +138,112 @@
     }
 
     .panel-name {
-      font-size: 1.6rem;
+      font-size: 2rem;
+      color: #ff2a6d;
+      font-weight: 700;
+      margin-bottom: 12px;
       text-align: center;
-      margin-bottom: 10px;
-      color: var(--accent);
-      font-weight: 600;
     }
 
     .panel-author {
+      font-size: 1.2rem;
+      color: #c0c0e0;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(100, 80, 120, 0.3);
       text-align: center;
-      font-size: 0.95rem;
-      color: var(--subtext);
-      margin-bottom: 20px;
     }
 
     .panel-description {
-      font-size: 1rem;
-      line-height: 1.7;
-      text-align: center;
-      margin-bottom: 30px;
-      color: var(--text);
-    }
-
-    .download-btn {
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(to right, #8a2be2, #4b0082);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-family: inherit;
       font-size: 1.1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
-    }
-
-    .download-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(138, 43, 226, 0.6);
+      line-height: 1.7;
+      color: #e0e0ff;
+      margin-bottom: 32px;
+      text-align: center;
+      max-width: 700px;
     }
 
     #videoContainer {
+      width: 100%;
+      max-width: 700px;
+      margin-bottom: 32px;
       display: none;
-      margin: 20px 0;
     }
 
     #videoContainer video,
     #videoContainer iframe {
       width: 100%;
       aspect-ratio: 16 / 9;
-      border-radius: 10px;
-      border: 1px solid rgba(138, 43, 226, 0.2);
-      background: #0a0718;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      background: #0f0c1c;
     }
 
-    /* Mobile */
-    @media (max-width: 768px) {
-      body {
-        padding: 15px;
+    .download-btn {
+      display: block;
+      width: 280px;
+      padding: 16px;
+      background: linear-gradient(90deg, #ff2a6d, #d16ba5);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(255, 42, 109, 0.4);
+    }
+
+    .download-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 25px rgba(255, 42, 109, 0.6);
+    }
+
+    /* Мобильная адаптация */
+    @media (max-width: 900px) {
+      .container {
+        flex-direction: column;
+        height: auto;
       }
 
-      h1 {
-        font-size: 2.2rem;
-      }
-
-      .mods-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 16px;
-      }
-
-      .mod-card {
-        width: 140px;
-      }
-
-      .side-panel {
+      .mods-sidebar {
         width: 100%;
-        right: -100%;
+        height: auto;
       }
-    }
 
-    @media (max-width: 480px) {
-      .mods-grid {
-        grid-template-columns: 1fr 1fr;
+      .mod-detail-panel {
+        width: 100%;
+        border-left: none;
+        border-top: 2px solid #ff2a6d;
+        padding: 30px 20px;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>GOREBOX MODS</h1>
-      <p class="subtitle">I publish all the mods I find or create here. DM me on Discord: bigwater6464</p>
-    </header>
+    <!-- Левая панель: список модов -->
+    <div class="mods-sidebar">
+      <header>
+        <h1>GoreBox Mods</h1>
+        <p class="subtitle">I publish all the mods I find or create here. If you'd like to publish a mod here or delete yours, please DM me on Discord: bigwater6464</p>
+      </header>
+      <div class="mods-grid" id="modsGrid">
+        <!-- Моды будут здесь -->
+      </div>
+    </div>
 
-    <div class="mods-grid" id="modsGrid"></div>
-  </div>
-
-  <div class="overlay" id="overlay"></div>
-
-  <div class="side-panel" id="sidePanel">
-    <button class="close-btn" id="closeBtn">
-      <i class="fas fa-times"></i>
-    </button>
-    <div class="panel-content">
+    <!-- Правая панель: детали мода -->
+    <div class="mod-detail-panel" id="detailPanel">
       <div class="panel-icon">
         <img id="panelIconImg" src="" alt="Mod Icon">
       </div>
-      <div id="videoContainer"></div>
       <h2 class="panel-name" id="panelName"></h2>
       <p class="panel-author" id="panelAuthor"></p>
       <p class="panel-description" id="panelDescription"></p>
+      <div id="videoContainer"></div>
       <button class="download-btn" id="downloadBtn">
-        <i class="fas fa-download"></i> DOWNLOAD
+        <i class="fas fa-download"></i> Download Mod
       </button>
     </div>
   </div>
@@ -368,25 +282,7 @@
     };
 
     const modsGrid = document.getElementById('modsGrid');
-    Object.entries(modData).forEach(([id, mod]) => {
-      const card = document.createElement('div');
-      card.className = 'mod-card';
-      card.setAttribute('data-mod', id);
-      card.innerHTML = `
-        <div class="mod-preview">
-          <img src="${mod.icon}" alt="${mod.name}" onerror="this.src='https://via.placeholder.com/200/1a0b2e/8a2be2?text=404'">
-        </div>
-        <div class="mod-info">
-          <div class="mod-title">${mod.name}</div>
-          <div class="mod-author">by ${mod.author}</div>
-        </div>
-      `;
-      modsGrid.appendChild(card);
-    });
-
-    const sidePanel = document.getElementById('sidePanel');
-    const overlay = document.getElementById('overlay');
-    const closeBtn = document.getElementById('closeBtn');
+    const detailPanel = document.getElementById('detailPanel');
     const panelIconImg = document.getElementById('panelIconImg');
     const panelName = document.getElementById('panelName');
     const panelAuthor = document.getElementById('panelAuthor');
@@ -394,77 +290,86 @@
     const downloadBtn = document.getElementById('downloadBtn');
     const videoContainer = document.getElementById('videoContainer');
 
+    let activeCard = null;
+
+    // Генерация карточек
+    Object.entries(modData).forEach(([id, mod]) => {
+      const card = document.createElement('div');
+      card.className = 'mod-card';
+      card.setAttribute('data-mod', id);
+      card.innerHTML = `
+        <div class="mod-title">${mod.name}</div>
+        <div class="mod-author">by ${mod.author}</div>
+      `;
+      modsGrid.appendChild(card);
+    });
+
+    // Обработчик клика по карточке
     document.querySelectorAll('.mod-card').forEach(card => {
       card.addEventListener('click', () => {
+        if (activeCard) activeCard.classList.remove('active');
+        card.classList.add('active');
+        activeCard = card;
+
         const modId = card.getAttribute('data-mod');
         const mod = modData[modId];
 
-        panelIconImg.src = mod.icon;
+        panelIconImg.src = mod.icon || 'https://via.placeholder.com/180/333/999?text=No+Image';
         panelName.textContent = mod.name;
         panelAuthor.textContent = `by ${mod.author}`;
         panelDescription.innerHTML = mod.description.replace(/\n/g, '<br>');
 
+        // Обработка видео
+        videoContainer.style.display = 'none';
+        videoContainer.innerHTML = '';
+
         if (mod.video) {
           let videoElement;
-          if (/\.(mp4|webm|ogg)$/.test(mod.video)) {
+          if (mod.video.endsWith('.mp4') || mod.video.endsWith('.webm') || mod.video.endsWith('.ogg')) {
             videoElement = document.createElement('video');
             videoElement.controls = true;
+            videoElement.style.width = '100%';
+
             const source = document.createElement('source');
             source.src = mod.video;
-            source.type = `video/${mod.video.split('.').pop()}`;
+            source.type = mod.video.endsWith('.mp4')
+              ? 'video/mp4'
+              : mod.video.endsWith('.webm')
+                ? 'video/webm'
+                : 'video/ogg';
+
             videoElement.appendChild(source);
             videoElement.load();
           } else {
             videoElement = document.createElement('iframe');
             videoElement.src = mod.video;
+            videoElement.style.border = 'none';
             videoElement.allow = 'autoplay; fullscreen';
             videoElement.allowFullscreen = true;
-            videoElement.style.border = 'none';
           }
-          videoContainer.innerHTML = '';
           videoContainer.appendChild(videoElement);
           videoContainer.style.display = 'block';
-        } else {
-          videoContainer.style.display = 'none';
         }
 
-        sidePanel.setAttribute('data-current-mod', modId);
-        sidePanel.classList.add('active');
-        overlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        detailPanel.classList.remove('hidden');
+        downloadBtn.onclick = () => {
+          if (mod.downloadUrl) {
+            const link = document.createElement('a');
+            link.href = mod.downloadUrl;
+            link.download = '';
+            link.click();
+          } else {
+            alert("Download link not available.");
+          }
+        };
       });
     });
 
-    function closePanel() {
-      sidePanel.classList.remove('active');
-      overlay.classList.remove('active');
-      document.body.style.overflow = 'auto';
-      const iframe = videoContainer.querySelector('iframe');
-      if (iframe) {
-        const src = iframe.src;
-        iframe.src = '';
-        setTimeout(() => iframe.src = src, 100);
-      }
+    // Показать первый мод по умолчанию (опционально)
+    const firstCard = document.querySelector('.mod-card');
+    if (firstCard) {
+      firstCard.click();
     }
-
-    closeBtn.addEventListener('click', closePanel);
-    overlay.addEventListener('click', closePanel);
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') closePanel();
-    });
-
-    downloadBtn.addEventListener('click', () => {
-      const modId = sidePanel.getAttribute('data-current-mod');
-      const mod = modData[modId];
-      if (mod?.downloadUrl) {
-        const a = document.createElement('a');
-        a.href = mod.downloadUrl;
-        a.download = '';
-        a.click();
-      } else {
-        alert("Download unavailable.");
-      }
-    });
   </script>
 </body>
 </html>
