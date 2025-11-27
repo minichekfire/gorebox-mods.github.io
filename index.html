@@ -6,7 +6,6 @@
   <title>GoreBox Mods</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    /* Шрифт Kenyan Coffee */
     @font-face {
       font-family: 'Kenyan Coffee';
       src: url('fonts/Kenyan Coffee Rg.otf') format('opentype');
@@ -40,8 +39,8 @@
     }
 
     body {
-      background: #1a0505; /* Темно-красный фон */
-      color: #f5e0e0; /* Светло-розовый текст */
+      background: #1a0505;
+      color: #f5e0e0;
       min-height: 100vh;
       padding: 20px;
       overflow-x: hidden;
@@ -55,10 +54,9 @@
       height: calc(100vh - 40px);
     }
 
-    /* Левая колонка — список модов */
     .mods-sidebar {
       width: 300px;
-      background: rgba(40, 5, 5, 0.7); /* Тёмно-бордовый */
+      background: rgba(40, 5, 5, 0.7);
       border-radius: 16px;
       padding: 24px;
       overflow-y: auto;
@@ -90,6 +88,15 @@
       font-size: 0.95rem;
       margin-top: 8px;
       line-height: 1.5;
+    }
+
+    .mods-sidebar .subtitle a {
+      color: #ff6666;
+      text-decoration: underline;
+    }
+
+    .mods-sidebar .subtitle a:hover {
+      color: #ff9999;
     }
 
     .mods-grid {
@@ -129,7 +136,6 @@
       margin-top: 4px;
     }
 
-    /* Правая колонка — детали мода */
     .mod-detail-panel {
       flex: 1;
       background: linear-gradient(135deg, #200505, #300505);
@@ -225,7 +231,6 @@
       box-shadow: 0 6px 25px rgba(255, 77, 77, 0.6);
     }
 
-    /* Мобильная адаптация */
     @media (max-width: 900px) {
       .container {
         flex-direction: column;
@@ -248,18 +253,18 @@
 </head>
 <body>
   <div class="container">
-    <!-- Левая панель: список модов -->
     <div class="mods-sidebar">
       <header>
         <h1>GoreBox Mods</h1>
-        <p class="subtitle">I publish all the mods I find or create here. If you'd like to publish a mod here or delete yours, please DM me on Discord or Telegram: bigwater6464</p>
+        <p class="subtitle">I publish all the mods I find or create here. If you'd like to publish a mod here or delete yours, please DM me on Discord or Telegram: bigwater6464.<br><br>
+        ⚠️ You need a special version of the game for mods to work: <a href="https://drive.google.com/file/d/13w090fdRfxDagZoP2U2uBHO6OsK3BaKL/view?usp=sharing" target="_blank" rel="noopener noreferrer">Download GoreBox v16.0.18 (PC)</a>
+        </p>
       </header>
       <div class="mods-grid" id="modsGrid">
-        <!-- Моды будут здесь -->
+          
       </div>
     </div>
 
-    <!-- Правая панель: детали мода -->
     <div class="mod-detail-panel" id="detailPanel">
       <div class="panel-icon">
         <img id="panelIconImg" src="" alt="Mod Icon">
@@ -332,7 +337,6 @@
 
     let activeCard = null;
 
-    // Генерация карточек
     Object.entries(modData).forEach(([id, mod]) => {
       const card = document.createElement('div');
       card.className = 'mod-card';
@@ -344,7 +348,6 @@
       modsGrid.appendChild(card);
     });
 
-    // Обработчик клика по карточке
     document.querySelectorAll('.mod-card').forEach(card => {
       card.addEventListener('click', () => {
         if (activeCard) activeCard.classList.remove('active');
@@ -359,7 +362,6 @@
         panelAuthor.textContent = `by ${mod.author}`;
         panelDescription.innerHTML = mod.description.replace(/\n/g, '<br>');
 
-        // Обработка видео
         videoContainer.style.display = 'none';
         videoContainer.innerHTML = '';
 
@@ -405,7 +407,6 @@
       });
     });
 
-    // Показать первый мод по умолчанию (опционально)
     const firstCard = document.querySelector('.mod-card');
     if (firstCard) {
       firstCard.click();
